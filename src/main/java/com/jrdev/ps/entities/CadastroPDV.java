@@ -16,14 +16,14 @@ public class CadastroPDV implements Serializable{
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private long id;
+	private Long id;
 	private String nome;
 	private Integer cep;
 	
 	public CadastroPDV() {
 	}
 	
-	public CadastroPDV(long id, String nome, Integer cep) {
+	public CadastroPDV(Long id, String nome, Integer cep) {
 		super();
 		this.id = id;
 		this.nome = nome;
