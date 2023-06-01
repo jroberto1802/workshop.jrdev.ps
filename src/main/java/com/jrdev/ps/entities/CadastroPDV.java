@@ -1,12 +1,17 @@
 package com.jrdev.ps.entities;
 
 import java.io.Serializable;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -19,6 +24,10 @@ public class CadastroPDV implements Serializable{
 	private Long id;
 	private String nome;
 	private Integer cep;
+	
+	@JsonIgnore
+	@OneToMany(mappedBy = "pdv")
+	private Set<ProcessoSeletivo> processos = new HashSet<>();
 	
 	public CadastroPDV() {
 	}
@@ -52,6 +61,10 @@ public class CadastroPDV implements Serializable{
 
 	public void setCep(Integer cep) {
 		this.cep = cep;
+	}
+	
+	public Set<ProcessoSeletivo> getProcessos() {
+		return processos;
 	}
 
 	@Override
