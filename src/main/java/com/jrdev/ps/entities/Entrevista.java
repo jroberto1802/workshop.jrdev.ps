@@ -2,9 +2,12 @@ package com.jrdev.ps.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
+import java.util.HashSet;
 import java.util.Objects;
+import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -12,6 +15,7 @@ import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -37,6 +41,9 @@ public class Entrevista implements Serializable{
 	@ManyToOne
 	@JoinColumn(name = "candidato_id")
 	private Candidato candidato;
+	
+	@OneToMany
+	private Set<AplicacaoQuestionario> questionarios = new HashSet<>();
 	
 	public Entrevista() {
 	}
@@ -118,6 +125,10 @@ public class Entrevista implements Serializable{
 		this.candidato = candidato;
 	}
 
+	public Set<AplicacaoQuestionario> getQuestionarios() {
+		return questionarios;
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -134,6 +145,11 @@ public class Entrevista implements Serializable{
 		Entrevista other = (Entrevista) obj;
 		return Objects.equals(id, other.id);
 	}
+	
+	public void aplicarQuestionario(AplicacaoQuestionario aplicacaoQuestionario) {
+		questionarios.add(aplicacaoQuestionario);
+	}
+
 	
 	
 }

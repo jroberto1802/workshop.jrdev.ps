@@ -8,6 +8,7 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.jrdev.ps.entities.AplicacaoQuestionario;
 import com.jrdev.ps.entities.CadastroPDV;
 import com.jrdev.ps.entities.Candidato;
 import com.jrdev.ps.entities.Entrevista;
@@ -15,6 +16,7 @@ import com.jrdev.ps.entities.ProcessoSeletivo;
 import com.jrdev.ps.entities.enums.Status;
 import com.jrdev.ps.entities.enums.TipoVaga;
 import com.jrdev.ps.entities.enums.Turno;
+import com.jrdev.ps.repositories.AplicacaoQuestionarioRepository;
 import com.jrdev.ps.repositories.CadastroPDVRepository;
 import com.jrdev.ps.repositories.CandidatoRepository;
 import com.jrdev.ps.repositories.EntrevistaRepository;
@@ -35,9 +37,16 @@ public class TestConfig implements CommandLineRunner{
 	
 	@Autowired
 	private EntrevistaRepository entrevistaRepository;
+	
+	@Autowired
+	private AplicacaoQuestionarioRepository aplicacaoQuestionario;
 
 	@Override
 	public void run(String... args) throws Exception {
+		
+		AplicacaoQuestionario aq1 = new AplicacaoQuestionario();
+		
+		aplicacaoQuestionario.saveAll(Arrays.asList(aq1));
 		
 		CadastroPDV pdv1 = new CadastroPDV(null, "João Pessoa", 58030021);
 		CadastroPDV pdv2 = new CadastroPDV(null, "Recife", 52041080);
@@ -59,6 +68,8 @@ public class TestConfig implements CommandLineRunner{
 		Entrevista ent1 = new Entrevista(null, Instant.parse("2023-05-31T09:00:00Z"), 8.0, 9.0, 8.0, 9.0, ps1, c1);
 		Entrevista ent2 = new Entrevista(null, Instant.parse("2023-06-01T09:00:00Z"), 9.0, 9.0, 9.0, 10.0, ps2, c2);
 		Entrevista ent3 = new Entrevista(null, Instant.parse("2023-05-31T09:00:00Z"), 8.0, 9.0, 8.0, 9.0, ps1, c3);
+		
+		ent1.aplicarQuestionario(aq1);
 		
 		entrevistaRepository.saveAll(Arrays.asList(ent1, ent2, ent3));
 
