@@ -13,15 +13,24 @@ import com.jrdev.ps.repositories.EntrevistaRepository;
 public class EntrevistaService {
 	
 	@Autowired
-	private EntrevistaRepository repository;
+	private EntrevistaRepository entrevistaRepository;
 	
 	public List<Entrevista> findAll() {
-		return repository.findAll();
+		return entrevistaRepository.findAll();
 	}
 	
 	public Entrevista findById(Long id) {
-		Optional<Entrevista> obj = repository.findById(id);
+		Optional<Entrevista> obj = entrevistaRepository.findById(id);
 		return obj.get();
 	}
 	
+	public Entrevista associarQuestionario(Long entrevistaId, Long questionarioId) {
+        Entrevista entrevista = entrevistaRepository.findById(entrevistaId).orElseThrow(() -> new IllegalArgumentException("Entrevista não encontrada"));
+        
+        Questionario questionario = entrevistaRepository.findById(questionarioId).orElseThrow(() -> new IllegalArgumentException("Questionário não encontrado"));
+        
+        entrevista.setQuestionario(questionario);
+        
+        return entrevistaRepository.save(entrevista);
+    }
 }

@@ -42,8 +42,10 @@ public class Entrevista implements Serializable{
 	@JoinColumn(name = "candidato_id")
 	private Candidato candidato;
 	
-	@OneToMany
+	@JsonIgnore
+	@OneToMany(mappedBy = "entrevista")
 	private Set<AplicacaoQuestionario> questionarios = new HashSet<>();
+
 	
 	public Entrevista() {
 	}

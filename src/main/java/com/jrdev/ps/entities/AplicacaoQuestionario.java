@@ -6,7 +6,7 @@ import java.util.Objects;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 
 @Entity
@@ -21,8 +21,9 @@ public class AplicacaoQuestionario implements Serializable{
 	private Double pontuacao = null;
 	private Integer tempoResolucaoCandidatoSeg = null;
 	
-	@OneToOne
-	private Entrevista entrevistaId;
+	@ManyToOne
+    @JoinColumn(name = "entrevista_id")
+    private Entrevista entrevista;
 	
 	public AplicacaoQuestionario() {
 	}
@@ -60,11 +61,11 @@ public class AplicacaoQuestionario implements Serializable{
 	}
 
 	public Entrevista getEntrevistaId() {
-		return entrevistaId;
+		return entrevista;
 	}
 
 	public void setEntrevistaId(Entrevista entrevistaId) {
-		this.entrevistaId = entrevistaId;
+		this.entrevista = entrevistaId;
 	}
 
 	@Override
