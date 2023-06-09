@@ -20,7 +20,6 @@ public class Questionario implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	
 	private String titulo;
@@ -60,6 +59,10 @@ public class Questionario implements Serializable{
 
 	public Set<Questao> getQuestoes() {
 		return questoes;
+	}
+	
+	public void addQuestao(Questao questao) {
+		questoes.add(questao);
 	}
 
 	@Override

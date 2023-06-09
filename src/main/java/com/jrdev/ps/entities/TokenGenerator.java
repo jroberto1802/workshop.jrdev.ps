@@ -25,14 +25,14 @@ public class TokenGenerator {
     }
 
     public static long generateRandomToken() {
-        long min = (long) Math.pow(10, TOKEN_LENGTH - 1) + 1;
+        long min = 1_000_000; // Define o valor mínimo como 1,000,000
         long max = (long) Math.pow(10, TOKEN_LENGTH) - 1;
         long flag = min + new Random().nextLong() % (max - min + 1);
-        
-        if (flag < 0) {
-            return flag * -1;
-        } else {
-            return flag;
+
+        if (flag <= 999_999) {
+            flag = 999_999 + (flag % (max - 999_999 + 1));
         }
+        
+        return flag;
     }
 }

@@ -6,6 +6,7 @@ import java.util.Objects;
 import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.jrdev.ps.entities.enums.TipoQuestao;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -28,7 +29,7 @@ public class Questao implements Serializable{
 	private String problema;
 	private Integer tempoResolucaoSeg;
 	private Double qtdPontos;
-	private String tipoQuestao;
+	private Integer tipoQuestao;
 	
 	@ManyToOne
 	@JoinColumn(name = "questionario_id")
@@ -41,13 +42,14 @@ public class Questao implements Serializable{
 	public Questao() {
 	}
 
-	public Questao(Long id, String problema, Integer tempoResolucaoSeg, Double qtdPontos, String tipoQuestao) {
+	public Questao(Long id, String problema, Integer tempoResolucaoSeg, Double qtdPontos, TipoQuestao tipoQuestao, Questionario questionario) {
 		super();
 		this.id = id;
 		this.problema = problema;
 		this.tempoResolucaoSeg = tempoResolucaoSeg;
 		this.qtdPontos = qtdPontos;
-		this.tipoQuestao = tipoQuestao;
+		setTipoQuestao(tipoQuestao);
+		setQuestionario(questionario);
 	}
 
 	public Long getId() {
@@ -82,12 +84,26 @@ public class Questao implements Serializable{
 		this.qtdPontos = qtdPontos;
 	}
 
-	public String getTipoQuestao() {
-		return tipoQuestao;
+	public TipoQuestao getTipoQuestao() {
+		return TipoQuestao.valueOf(tipoQuestao);
 	}
 
-	public void setTipoQuestao(String tipoQuestao) {
-		this.tipoQuestao = tipoQuestao;
+	public void setTipoQuestao(TipoQuestao tipoQuestao) {
+		if(tipoQuestao != null) {
+			this.tipoQuestao = tipoQuestao.getCode();
+		}
+	}
+	
+	public Questionario getQuestionario() {
+		return questionario;
+	}
+
+	public void setQuestionario(Questionario questionario) {
+		this.questionario = questionario;
+	}
+
+	public Set<Resposta> getRespostas() {
+		return respostas;
 	}
 
 	@Override

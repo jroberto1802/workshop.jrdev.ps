@@ -41,8 +41,9 @@ public class AplicacaoQuestionario implements Serializable{
 	public AplicacaoQuestionario() {
 	}
 	
-	public AplicacaoQuestionario(Entrevista entrevista) {
+	public AplicacaoQuestionario(Entrevista entrevista, Questionario questionario) {
 		setEntrevista(entrevista);
+		setQuestionario(questionario);
 	}
 
 	public Long getToken() {

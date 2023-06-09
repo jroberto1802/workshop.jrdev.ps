@@ -13,7 +13,10 @@ import com.jrdev.ps.entities.CadastroPDV;
 import com.jrdev.ps.entities.Candidato;
 import com.jrdev.ps.entities.Entrevista;
 import com.jrdev.ps.entities.ProcessoSeletivo;
+import com.jrdev.ps.entities.Questao;
+import com.jrdev.ps.entities.Questionario;
 import com.jrdev.ps.entities.enums.Status;
+import com.jrdev.ps.entities.enums.TipoQuestao;
 import com.jrdev.ps.entities.enums.TipoVaga;
 import com.jrdev.ps.entities.enums.Turno;
 import com.jrdev.ps.repositories.AplicacaoQuestionarioRepository;
@@ -75,13 +78,29 @@ public class TestConfig implements CommandLineRunner{
 		
 		candidatoRepository.saveAll(Arrays.asList(c1, c2, c3));
 		
+		Questionario qtn1 = new Questionario(1L, "Questionário Técnico");
+		
+		questionarioRepository.saveAll(Arrays.asList(qtn1));
+		
+		Questao q1 = new Questao(null, "Como fazemos para descobrir o nome do Computador no Windows?", 120, 5.0, TipoQuestao.ABERTA, qtn1);
+		Questao q2 = new Questao(null, "Como podemos realizar o compartilhamento de pastas no Windows 10, para todos os usuários?", 120, 5.0, TipoQuestao.ABERTA, qtn1);
+		Questao q3 = new Questao(null, "Como podemos descobrir o endereço IP de um computador na rede local no Windows?", 120, 5.0, TipoQuestao.ABERTA, qtn1);
+		
+		questaoRepository.saveAll(Arrays.asList(q1, q2, q3));
+		
+		qtn1.addQuestao(q1);
+		qtn1.addQuestao(q2);
+		qtn1.addQuestao(q3);
+		
+		questionarioRepository.saveAll(Arrays.asList(qtn1));
+		
 		Entrevista ent1 = new Entrevista(null, Instant.parse("2023-05-31T09:00:00Z"), 8.0, 9.0, 8.0, 9.0, ps1, c1);
 		Entrevista ent2 = new Entrevista(null, Instant.parse("2023-06-01T09:00:00Z"), 9.0, 9.0, 9.0, 10.0, ps2, c2);
 		Entrevista ent3 = new Entrevista(null, Instant.parse("2023-05-31T09:00:00Z"), 8.0, 9.0, 8.0, 9.0, ps1, c3);
 		
 		entrevistaRepository.saveAll(Arrays.asList(ent1, ent2, ent3));
 		
-		AplicacaoQuestionario aq1 = new AplicacaoQuestionario(ent1);
+		AplicacaoQuestionario aq1 = new AplicacaoQuestionario(ent1, qtn1);
 		
 		aplicacaoQuestionario.saveAll(Arrays.asList(aq1));
 		
@@ -96,6 +115,6 @@ public class TestConfig implements CommandLineRunner{
 		processoSeletivoRepository.saveAll(Arrays.asList(ps1, ps2));
 		
 		
-		System.out.println(ent1);
+		
 	}
 }
