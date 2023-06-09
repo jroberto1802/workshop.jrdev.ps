@@ -18,6 +18,17 @@ import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Transient;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
+import com.google.gson.Gson;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
+
 @Entity
 @Table(name = "tb_entrevista")
 public class Entrevista implements Serializable{
@@ -151,7 +162,7 @@ public class Entrevista implements Serializable{
 	public void aplicarQuestionario(AplicacaoQuestionario aplicacaoQuestionario) {
 		aplicacoesQuestionarios.add(aplicacaoQuestionario);
 	}
-
+	
 	@Override
 	public String toString() {
 		return "Entrevista [id=" + id + ", data=" + data + ", postura=" + postura + ", diccao=" + diccao + ", girias="

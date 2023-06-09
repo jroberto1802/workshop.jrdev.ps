@@ -1,5 +1,6 @@
 package com.jrdev.ps.resurces;
 
+import java.io.IOException;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,5 +30,12 @@ public class EntrevistaResurce {
 	public ResponseEntity<Entrevista> findById(@PathVariable Long id) {
 		Entrevista obj = service.findById(id);
 		return ResponseEntity.ok().body(obj);
+	}
+	
+	@GetMapping(value = "/calcularDistancia/{id}")
+	public ResponseEntity<Double> calcularDistancia(@PathVariable Long id) throws IOException {
+		Entrevista obj = service.findById(id);
+		Double valor = service.calcularDistancia(obj);
+		return ResponseEntity.ok().body(valor);
 	}
 }

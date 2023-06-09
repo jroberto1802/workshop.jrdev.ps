@@ -29,10 +29,14 @@ public class TokenGenerator {
         long max = (long) Math.pow(10, TOKEN_LENGTH) - 1;
         long flag = min + new Random().nextLong() % (max - min + 1);
 
-        if (flag <= 999_999) {
+        if (flag < min) {
             flag = 999_999 + (flag % (max - 999_999 + 1));
         }
         
-        return flag;
+        if (flag < 0) {
+            return flag * -1;
+        } else {
+            return flag;
+        }
     }
 }

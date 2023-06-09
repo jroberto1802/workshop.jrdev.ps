@@ -15,6 +15,7 @@ import com.jrdev.ps.entities.Entrevista;
 import com.jrdev.ps.entities.ProcessoSeletivo;
 import com.jrdev.ps.entities.Questao;
 import com.jrdev.ps.entities.Questionario;
+import com.jrdev.ps.entities.Resposta;
 import com.jrdev.ps.entities.enums.Status;
 import com.jrdev.ps.entities.enums.TipoQuestao;
 import com.jrdev.ps.entities.enums.TipoVaga;
@@ -72,7 +73,7 @@ public class TestConfig implements CommandLineRunner{
 		
 		processoSeletivoRepository.saveAll(Arrays.asList(ps1, ps2));
 		
-		Candidato c1 = new Candidato(null, 83988264564L, "PEDRO HENRIQUE PORTELA DE SOUSA", 19, "Rua Narayola, Qd. 34 lote 1/21", 74915235, "Goiânia", "GO", "1º Periodo", Turno.NOITE, Status.EM_PROCESSO);
+		Candidato c1 = new Candidato(null, 83988264564L, "PEDRO HENRIQUE PORTELA DE SOUSA", 19, "Rua Narayola, Qd. 34 lote 1/21", 58108357, "Goiânia", "GO", "1º Periodo", Turno.NOITE, Status.EM_PROCESSO);
 		Candidato c2 = new Candidato(null, 83988264565L, "GIDEL JOSÉ FERREIRA DA SILVA", 18, "Rua Canavieira, 316", 52150120, "Recife", "PE", "2º Periodo", Turno.NOITE, Status.EM_PROCESSO);
 		Candidato c3 = new Candidato(null, 83988264562L, "MATHEUS DIOGO DA SILVA", 21, "R. 1 Q 3, 170 - St. Central", 74013010, "Goiânia", "GO", "1º Periodo", Turno.MANHA, Status.EM_PROCESSO);
 		
@@ -104,17 +105,22 @@ public class TestConfig implements CommandLineRunner{
 		
 		aplicacaoQuestionario.saveAll(Arrays.asList(aq1));
 		
-		entrevistaRepository.saveAll(Arrays.asList(ent1));
+		Resposta r1 = new Resposta(null, "Configurações>Sistema", q1, aq1);
+		Resposta r2 = new Resposta(null, "botão direito sob a pasta desejada>Mostrar mais opções>Conceder acesso a>Pessoas Específicas>Selecione Todos", q2, aq1);
+		Resposta r3 = new Resposta(null, "windows+r>Comando(ncpa.cpl)>acesso ao painel de conexão de redes>Botão direito na rede conectada>status>detalhes...", q3, aq1);
 		
-		aplicacaoQuestionario.saveAll(Arrays.asList(aq1));
+		respostaRepository.saveAll(Arrays.asList(r1, r2, r3));
 		
 		ps1.agendarEntrevista(ent1);
 		ps1.agendarEntrevista(ent3);
 		ps2.agendarEntrevista(ent2);
 		
+		aq1.addRespostas(r1);
+		aq1.addRespostas(r2);
+		aq1.addRespostas(r3);
+		
 		processoSeletivoRepository.saveAll(Arrays.asList(ps1, ps2));
 		
-		
-		
+		aplicacaoQuestionario.saveAll(Arrays.asList(aq1));
 	}
 }

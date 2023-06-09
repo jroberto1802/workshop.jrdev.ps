@@ -20,6 +20,8 @@ public class Resposta implements Serializable{
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 	
+	private String descricao;
+	
 	@ManyToOne
     @JoinColumn(name = "aplicacaoQuestionario_id")
     private AplicacaoQuestionario aplicacaoQuestionario;
@@ -28,16 +30,15 @@ public class Resposta implements Serializable{
     @JoinColumn(name = "questao_id")
     private Questao questao;
 	
-	private String resposta;
-	
 	public Resposta() {
 	}
 
-	public Resposta(Long id, AplicacaoQuestionario aplicacaoQuestionario, String resposta) {
+	public Resposta(Long id, String descricao, Questao questao, AplicacaoQuestionario aplicacaoQuestionario) {
 		super();
 		this.id = id;
-		this.aplicacaoQuestionario = aplicacaoQuestionario;
-		this.resposta = resposta;
+		this.descricao = descricao;
+		setQuestao(questao);
+		setAplicacaoQuestionario(aplicacaoQuestionario);
 	}
 
 	public Long getId() {
@@ -56,12 +57,20 @@ public class Resposta implements Serializable{
 		this.aplicacaoQuestionario = aplicacaoQuestionario;
 	}
 
-	public String getResposta() {
-		return resposta;
+	public String getDescricao() {
+		return descricao;
 	}
 
-	public void setResposta(String resposta) {
-		this.resposta = resposta;
+	public void setDescricao(String descricao) {
+		this.descricao = descricao;
+	}
+	
+	public Questao getQuestao() {
+		return questao;
+	}
+
+	public void setQuestao(Questao questao) {
+		this.questao = questao;
 	}
 
 	@Override

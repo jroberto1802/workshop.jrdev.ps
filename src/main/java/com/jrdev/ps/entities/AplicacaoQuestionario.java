@@ -97,6 +97,10 @@ public class AplicacaoQuestionario implements Serializable{
 	public List<Resposta> getRespostas() {
 		return respostas;
 	}
+	
+	public void addRespostas(Resposta resposta) {
+		respostas.add(resposta);
+	}
 
 	@Override
 	public int hashCode() {
