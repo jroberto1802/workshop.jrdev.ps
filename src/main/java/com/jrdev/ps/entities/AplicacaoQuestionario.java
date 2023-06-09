@@ -1,12 +1,17 @@
 package com.jrdev.ps.entities;
 
 import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 
 @Entity
@@ -25,7 +30,19 @@ public class AplicacaoQuestionario implements Serializable{
     @JoinColumn(name = "entrevista_id")
     private Entrevista entrevista;
 	
+	@JsonIgnore
+	@OneToMany(mappedBy = "aplicacaoQuestionario")
+	private List<Resposta> respostas = new ArrayList<>();
+	
+	@ManyToOne
+    @JoinColumn(name = "questionario_id")
+	private Questionario questionario;
+	
 	public AplicacaoQuestionario() {
+	}
+	
+	public AplicacaoQuestionario(Entrevista entrevista) {
+		setEntrevista(entrevista);
 	}
 
 	public Long getToken() {
@@ -60,12 +77,24 @@ public class AplicacaoQuestionario implements Serializable{
 		this.tempoResolucaoCandidatoSeg = tempoResolucaoCandidatoSeg;
 	}
 
-	public Entrevista getEntrevistaId() {
+	public Entrevista getEntrevista() {
 		return entrevista;
 	}
 
-	public void setEntrevistaId(Entrevista entrevistaId) {
-		this.entrevista = entrevistaId;
+	public void setEntrevista(Entrevista entrevista) {
+		this.entrevista = entrevista;
+	}
+
+	public Questionario getQuestionario() {
+		return questionario;
+	}
+
+	public void setQuestionario(Questionario questionario) {
+		this.questionario = questionario;
+	}
+
+	public List<Resposta> getRespostas() {
+		return respostas;
 	}
 
 	@Override
@@ -84,5 +113,13 @@ public class AplicacaoQuestionario implements Serializable{
 		AplicacaoQuestionario other = (AplicacaoQuestionario) obj;
 		return Objects.equals(token, other.token);
 	}
+
+	@Override
+	public String toString() {
+		return "AplicacaoQuestionario [token=" + token + ", percentualAcerto=" + percentualAcerto + ", pontuacao="
+				+ pontuacao + ", tempoResolucaoCandidatoSeg=" + tempoResolucaoCandidatoSeg + ", entrevista="
+				+ entrevista + ", respostas=" + respostas + ", questionario=" + questionario + "]";
+	}
+	
 	
 }

@@ -24,13 +24,4 @@ public class EntrevistaService {
 		return obj.get();
 	}
 	
-	public Entrevista associarQuestionario(Long entrevistaId, Long questionarioId) {
-        Entrevista entrevista = entrevistaRepository.findById(entrevistaId).orElseThrow(() -> new IllegalArgumentException("Entrevista não encontrada"));
-        
-        Questionario questionario = entrevistaRepository.findById(questionarioId).orElseThrow(() -> new IllegalArgumentException("Questionário não encontrado"));
-        
-        entrevista.setQuestionario(questionario);
-        
-        return entrevistaRepository.save(entrevista);
-    }
 }

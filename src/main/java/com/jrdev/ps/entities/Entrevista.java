@@ -2,12 +2,11 @@ package com.jrdev.ps.entities;
 
 import java.io.Serializable;
 import java.time.Instant;
-import java.util.HashSet;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
-import java.util.Set;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -17,6 +16,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
+import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_entrevista")
@@ -42,9 +42,9 @@ public class Entrevista implements Serializable{
 	@JoinColumn(name = "candidato_id")
 	private Candidato candidato;
 	
-	@JsonIgnore
+	@Transient
 	@OneToMany(mappedBy = "entrevista")
-	private Set<AplicacaoQuestionario> questionarios = new HashSet<>();
+	private List<AplicacaoQuestionario> aplicacoesQuestionarios = new ArrayList<>();
 
 	
 	public Entrevista() {
@@ -127,8 +127,8 @@ public class Entrevista implements Serializable{
 		this.candidato = candidato;
 	}
 
-	public Set<AplicacaoQuestionario> getQuestionarios() {
-		return questionarios;
+	public List<AplicacaoQuestionario> getQuestionarios() {
+		return aplicacoesQuestionarios;
 	}
 
 	@Override
@@ -149,7 +149,14 @@ public class Entrevista implements Serializable{
 	}
 	
 	public void aplicarQuestionario(AplicacaoQuestionario aplicacaoQuestionario) {
-		questionarios.add(aplicacaoQuestionario);
+		aplicacoesQuestionarios.add(aplicacaoQuestionario);
+	}
+
+	@Override
+	public String toString() {
+		return "Entrevista [id=" + id + ", data=" + data + ", postura=" + postura + ", diccao=" + diccao + ", girias="
+				+ girias + ", pontualidade=" + pontualidade + ", processo=" + processo + ", candidato=" + candidato
+				+ ", aplicacoesQuestionarios=" + aplicacoesQuestionarios + "]";
 	}
 
 	

@@ -21,10 +21,22 @@ import com.jrdev.ps.repositories.CadastroPDVRepository;
 import com.jrdev.ps.repositories.CandidatoRepository;
 import com.jrdev.ps.repositories.EntrevistaRepository;
 import com.jrdev.ps.repositories.ProcessoSeletivoRepository;
+import com.jrdev.ps.repositories.QuestaoRepository;
+import com.jrdev.ps.repositories.QuestionarioRepository;
+import com.jrdev.ps.repositories.RespostaRepository;
 
 @Configuration
 @Profile("test")
 public class TestConfig implements CommandLineRunner{
+	
+	@Autowired
+	private QuestaoRepository questaoRepository;
+	
+	@Autowired
+	private QuestionarioRepository questionarioRepository;
+	
+	@Autowired
+	private RespostaRepository respostaRepository;
 	
 	@Autowired
 	private CadastroPDVRepository cadastroPDVRepository;
@@ -40,13 +52,11 @@ public class TestConfig implements CommandLineRunner{
 	
 	@Autowired
 	private AplicacaoQuestionarioRepository aplicacaoQuestionario;
+	
 
 	@Override
 	public void run(String... args) throws Exception {
 		
-		AplicacaoQuestionario aq1 = new AplicacaoQuestionario();
-		
-		aplicacaoQuestionario.saveAll(Arrays.asList(aq1));
 		
 		CadastroPDV pdv1 = new CadastroPDV(null, "João Pessoa", 58030021);
 		CadastroPDV pdv2 = new CadastroPDV(null, "Recife", 52041080);
@@ -69,14 +79,23 @@ public class TestConfig implements CommandLineRunner{
 		Entrevista ent2 = new Entrevista(null, Instant.parse("2023-06-01T09:00:00Z"), 9.0, 9.0, 9.0, 10.0, ps2, c2);
 		Entrevista ent3 = new Entrevista(null, Instant.parse("2023-05-31T09:00:00Z"), 8.0, 9.0, 8.0, 9.0, ps1, c3);
 		
-		ent1.aplicarQuestionario(aq1);
-		
 		entrevistaRepository.saveAll(Arrays.asList(ent1, ent2, ent3));
-
+		
+		AplicacaoQuestionario aq1 = new AplicacaoQuestionario(ent1);
+		
+		aplicacaoQuestionario.saveAll(Arrays.asList(aq1));
+		
+		entrevistaRepository.saveAll(Arrays.asList(ent1));
+		
+		aplicacaoQuestionario.saveAll(Arrays.asList(aq1));
+		
 		ps1.agendarEntrevista(ent1);
 		ps1.agendarEntrevista(ent3);
 		ps2.agendarEntrevista(ent2);
 		
 		processoSeletivoRepository.saveAll(Arrays.asList(ps1, ps2));
+		
+		
+		System.out.println(ent1);
 	}
 }
