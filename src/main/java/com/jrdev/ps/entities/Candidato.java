@@ -5,6 +5,7 @@ import java.util.HashSet;
 import java.util.Objects;
 import java.util.Set;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.jrdev.ps.entities.enums.Status;
 import com.jrdev.ps.entities.enums.Turno;
 
@@ -12,8 +13,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
 @Entity
 @Table(name = "tb_candidato")
@@ -36,7 +37,7 @@ public class Candidato implements Serializable{
 	private Integer turnoFaculdade;
 	private Integer status;
 	
-	@Transient
+	@OneToMany(mappedBy = "candidato")
 	private Set<Entrevista> entrevistas = new HashSet<>();
 	
 	public Candidato() {
@@ -149,7 +150,8 @@ public class Candidato implements Serializable{
 			 this.status = status.getCode();
 		}
 	}
-
+	
+	@JsonIgnore
 	public Set<Entrevista> getEntrevista() {
 		return entrevistas;
 	}

@@ -32,7 +32,7 @@ public class EntrevistaResurce {
 		return ResponseEntity.ok().body(obj);
 	}
 	
-	@GetMapping(value = "/calcularDistancia/{id}")
+	@GetMapping(value = "/calculardistancia/{id}")
 	public ResponseEntity<Double> calcularDistancia(@PathVariable Long id) throws IOException {
 		Entrevista obj = service.findById(id);
 		Double valor = service.calcularDistancia(obj);

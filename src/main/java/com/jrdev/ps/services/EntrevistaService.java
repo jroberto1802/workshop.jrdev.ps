@@ -1,21 +1,23 @@
 package com.jrdev.ps.services;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
 import java.util.List;
 import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.jrdev.ps.entities.Entrevista;
+import com.jrdev.ps.repositories.EntrevistaRepository;
+
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.URL;
+
 import com.google.gson.JsonArray;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
-import com.jrdev.ps.entities.Entrevista;
-import com.jrdev.ps.repositories.EntrevistaRepository;
 
 @Service
 public class EntrevistaService {
@@ -32,7 +34,7 @@ public class EntrevistaService {
 		return obj.get();
 	}
 	
-	public static Double calcularDistancia(Entrevista entrevista) throws IOException {
+	public Double calcularDistancia(Entrevista entrevista) throws IOException {
         String apiKey = "AIzaSyBQDKSLXTpiV0G7jwZGzQh-hk0rhW894ec";
         String url = "https://maps.googleapis.com/maps/api/distancematrix/json" +
                 "?origins=" + entrevista.getProcesso().getPdv().getCep() +
@@ -54,8 +56,10 @@ public class EntrevistaService {
 
             String jsonResponse = response.toString();
 
+			@SuppressWarnings("deprecation")
 			JsonParser parser = new JsonParser();
-            JsonObject jsonObject = parser.parse(jsonResponse).getAsJsonObject();
+            @SuppressWarnings("deprecation")
+			JsonObject jsonObject = parser.parse(jsonResponse).getAsJsonObject();
 
             JsonArray rows = jsonObject.getAsJsonArray("rows");
             JsonObject rowObject = rows.get(0).getAsJsonObject();

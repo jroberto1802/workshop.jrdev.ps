@@ -7,6 +7,7 @@ import java.util.List;
 import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -16,18 +17,7 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
-import jakarta.persistence.Transient;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.URL;
-
-import com.google.gson.Gson;
-import com.google.gson.JsonArray;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 
 @Entity
 @Table(name = "tb_entrevista")
@@ -53,7 +43,6 @@ public class Entrevista implements Serializable{
 	@JoinColumn(name = "candidato_id")
 	private Candidato candidato;
 	
-	@Transient
 	@OneToMany(mappedBy = "entrevista")
 	private List<AplicacaoQuestionario> aplicacoesQuestionarios = new ArrayList<>();
 
@@ -137,7 +126,8 @@ public class Entrevista implements Serializable{
 	public void setCandidato(Candidato candidato) {
 		this.candidato = candidato;
 	}
-
+	
+	@JsonIgnore
 	public List<AplicacaoQuestionario> getQuestionarios() {
 		return aplicacoesQuestionarios;
 	}
