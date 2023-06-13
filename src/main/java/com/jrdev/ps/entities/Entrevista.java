@@ -1,6 +1,11 @@
 package com.jrdev.ps.entities;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.time.Instant;
 import java.util.ArrayList;
 import java.util.List;
@@ -8,6 +13,9 @@ import java.util.Objects;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.google.gson.JsonArray;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -131,6 +139,51 @@ public class Entrevista implements Serializable{
 	public List<AplicacaoQuestionario> getQuestionarios() {
 		return aplicacoesQuestionarios;
 	}
+	
+	public Double getCalcularDistancia(Integer origem, Integer destino) throws IOException {
+		String apiKey = "AIzaSyBQDKSLXTpiV0G7jwZGzQh-hk0rhW894ec";
+        String url = "https://maps.googleapis.com/maps/api/distancematrix/json" +
+                "?origins=" + origem +
+                "&destinations=" + destino +
+                "&key=" + apiKey;
+
+        HttpURLConnection connection = (HttpURLConnection) new URL(url).openConnection();
+        connection.setRequestMethod("GET");
+
+        int responseCode = connection.getResponseCode();
+        if (responseCode == HttpURLConnection.HTTP_OK) {
+            BufferedReader reader = new BufferedReader(new InputStreamReader(connection.getInputStream()));
+            StringBuilder response = new StringBuilder();
+            String line;
+            while ((line = reader.readLine()) != null) {
+                response.append(line);
+            }
+            reader.close();
+
+            String jsonResponse = response.toString();
+
+			@SuppressWarnings("deprecation")
+			JsonParser parser = new JsonParser();
+            @SuppressWarnings("deprecation")
+			JsonObject jsonObject = parser.parse(jsonResponse).getAsJsonObject();
+
+            JsonArray rows = jsonObject.getAsJsonArray("rows");
+            JsonObject rowObject = rows.get(0).getAsJsonObject();
+
+            JsonArray elements = rowObject.getAsJsonArray("elements");
+            JsonObject elementObject = elements.get(0).getAsJsonObject();
+
+            JsonObject distance = elementObject.getAsJsonObject("distance");
+            int distanceValue = distance.get("value").getAsInt();
+
+            // Converter o valor da distância de metros para quilômetros
+            double distanciaEmKm = distanceValue / 1000.0;
+
+            return distanciaEmKm; 
+        } else {
+            throw new IOException("Falha na solicitação HTTP. Código de resposta: " + responseCode);
+        }
+    }
 
 	@Override
 	public int hashCode() {

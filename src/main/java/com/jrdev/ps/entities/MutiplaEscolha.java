@@ -2,21 +2,16 @@ package com.jrdev.ps.entities;
 
 import java.io.Serializable;
 
+import com.jrdev.ps.entities.enums.TipoQuestao;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 @Entity
 @Table(name = "tb_questao_mutiplaescolha")
 public class MutiplaEscolha extends Questao implements Serializable{
 	private static final long serialVersionUID = 1L;
-	
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	private Long id;
-	
+		
 	private Alternativa alternativa1;
 	private Alternativa alternativa2;
 	private Alternativa alternativa3;
@@ -26,15 +21,18 @@ public class MutiplaEscolha extends Questao implements Serializable{
 	public MutiplaEscolha() {
 	}
 
-	public MutiplaEscolha(Alternativa alternativa1, Alternativa alternativa2, Alternativa alternativa3,
-			Alternativa alternativa4, Integer alternativaCorreta) {
-		super();
+	public MutiplaEscolha(Long id, String problema, Integer tempoResolucaoSeg, Double qtdPontos,
+			TipoQuestao tipoQuestao, Questionario questionario, Alternativa alternativa1,
+			Alternativa alternativa2, Alternativa alternativa3, Alternativa alternativa4, Integer alternativaCorreta) {
+		super(id, problema, tempoResolucaoSeg, qtdPontos, tipoQuestao, questionario);
 		this.alternativa1 = alternativa1;
 		this.alternativa2 = alternativa2;
 		this.alternativa3 = alternativa3;
 		this.alternativa4 = alternativa4;
 		this.alternativaCorreta = alternativaCorreta;
 	}
+
+
 
 	public Alternativa getAlternativa1() {
 		return alternativa1;

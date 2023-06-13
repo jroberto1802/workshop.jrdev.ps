@@ -8,10 +8,12 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.Profile;
 
+import com.jrdev.ps.entities.Alternativa;
 import com.jrdev.ps.entities.AplicacaoQuestionario;
 import com.jrdev.ps.entities.CadastroPDV;
 import com.jrdev.ps.entities.Candidato;
 import com.jrdev.ps.entities.Entrevista;
+import com.jrdev.ps.entities.MutiplaEscolha;
 import com.jrdev.ps.entities.ProcessoSeletivo;
 import com.jrdev.ps.entities.Questao;
 import com.jrdev.ps.entities.Questionario;
@@ -87,11 +89,14 @@ public class TestConfig implements CommandLineRunner{
 		Questao q2 = new Questao(null, "Como podemos realizar o compartilhamento de pastas no Windows 10, para todos os usuários?", 120, 5.0, TipoQuestao.ABERTA, qtn1);
 		Questao q3 = new Questao(null, "Como podemos descobrir o endereço IP de um computador na rede local no Windows?", 120, 5.0, TipoQuestao.ABERTA, qtn1);
 		
-		questaoRepository.saveAll(Arrays.asList(q1, q2, q3));
+		Questao q4 = new MutiplaEscolha(null, "Os computadores atuais ainda funcionam com sistema binário. A unidade básica nesse sistema é:", 60, 2.0, TipoQuestao.MUTIPLA_ESCOLHA, qtn1, new Alternativa("byte", 1), new Alternativa("bit", 2), new Alternativa("0", 3), new Alternativa("1", 4), 2);
+		
+		questaoRepository.saveAll(Arrays.asList(q1, q2, q3, q4));
 		
 		qtn1.addQuestao(q1);
 		qtn1.addQuestao(q2);
 		qtn1.addQuestao(q3);
+		qtn1.addQuestao(q4);
 		
 		questionarioRepository.saveAll(Arrays.asList(qtn1));
 		
@@ -105,11 +110,12 @@ public class TestConfig implements CommandLineRunner{
 		
 		aplicacaoQuestionario.saveAll(Arrays.asList(aq1));
 		
-		Resposta r1 = new Resposta(null, "Configurações>Sistema", q1, aq1);
-		Resposta r2 = new Resposta(null, "botão direito sob a pasta desejada>Mostrar mais opções>Conceder acesso a>Pessoas Específicas>Selecione Todos", q2, aq1);
-		Resposta r3 = new Resposta(null, "windows+r>Comando(ncpa.cpl)>acesso ao painel de conexão de redes>Botão direito na rede conectada>status>detalhes...", q3, aq1);
+		Resposta r1 = new Resposta(null, "Configurações>Sistema", q1, aq1, Instant.parse("2023-05-31T09:15:00Z"), Instant.parse("2023-05-31T09:18:30Z"));
+		Resposta r2 = new Resposta(null, "botão direito sob a pasta desejada>Mostrar mais opções>Conceder acesso a>Pessoas Específicas>Selecione Todos", q2, aq1, Instant.parse("2023-05-31T09:18:30Z"), Instant.parse("2023-05-31T09:20:45Z"));
+		Resposta r3 = new Resposta(null, "windows+r>Comando(ncpa.cpl)>acesso ao painel de conexão de redes>Botão direito na rede conectada>status>detalhes...", q3, aq1, Instant.parse("2023-05-31T09:20:45Z"), Instant.parse("2023-05-31T09:22:30Z"));
+		Resposta r4 = new Resposta(null, "2", q4, aq1, Instant.parse("2023-05-31T09:22:35Z"), Instant.parse("2023-05-31T09:23:30Z"));
 		
-		respostaRepository.saveAll(Arrays.asList(r1, r2, r3));
+		respostaRepository.saveAll(Arrays.asList(r1, r2, r3, r4));
 		
 		ps1.agendarEntrevista(ent1);
 		ps1.agendarEntrevista(ent3);
@@ -118,9 +124,15 @@ public class TestConfig implements CommandLineRunner{
 		aq1.addRespostas(r1);
 		aq1.addRespostas(r2);
 		aq1.addRespostas(r3);
+		aq1.addRespostas(r4);
 		
 		processoSeletivoRepository.saveAll(Arrays.asList(ps1, ps2));
 		
 		aplicacaoQuestionario.saveAll(Arrays.asList(aq1));
+		
+		for(Resposta r : aq1.getRespostas()) {
+			System.out.println(r.getCalcularTempoResolucaoSeg());
+		}
+		
 	}
 }

@@ -23,14 +23,13 @@ public class AplicacaoQuestionario implements Serializable{
 	private Long token = TokenGenerator.generateRandomToken();
 	
 	private Double percentualAcerto = null;
-	private Double pontuacao = null;
-	private Integer tempoResolucaoCandidatoSeg = null;
+	private Double pontuacaoTotal = null;
+	private Double tempoResolucaoMedCandidatoSeg = null;
 	
 	@ManyToOne
     @JoinColumn(name = "entrevista_id")
     private Entrevista entrevista;
 	
-	@JsonIgnore
 	@OneToMany(mappedBy = "aplicacaoQuestionario")
 	private List<Resposta> respostas = new ArrayList<>();
 	
@@ -62,20 +61,20 @@ public class AplicacaoQuestionario implements Serializable{
 		this.percentualAcerto = percentualAcerto;
 	}
 
-	public Double getPontuacao() {
-		return pontuacao;
+	public Double getPontuacaoTotal() {
+		return pontuacaoTotal;
 	}
 
-	public void setPontuacao(Double pontuacao) {
-		this.pontuacao = pontuacao;
+	public void setPontuacaoTotal(Double pontuacaoTotal) {
+		this.pontuacaoTotal = pontuacaoTotal;
 	}
 
-	public Integer getTempoResolucaoCandidatoSeg() {
-		return tempoResolucaoCandidatoSeg;
+	public Double getTempoResolucaoMedCandidatoSeg() {
+		return tempoResolucaoMedCandidatoSeg;
 	}
 
-	public void setTempoResolucaoCandidatoSeg(Integer tempoResolucaoCandidatoSeg) {
-		this.tempoResolucaoCandidatoSeg = tempoResolucaoCandidatoSeg;
+	public void setTempoResolucaoMedCandidatoSeg(Double tempoResolucaoMedCandidatoSeg) {
+		this.tempoResolucaoMedCandidatoSeg = tempoResolucaoMedCandidatoSeg;
 	}
 
 	public Entrevista getEntrevista() {
@@ -93,13 +92,54 @@ public class AplicacaoQuestionario implements Serializable{
 	public void setQuestionario(Questionario questionario) {
 		this.questionario = questionario;
 	}
-
+	
+	@JsonIgnore
 	public List<Resposta> getRespostas() {
 		return respostas;
 	}
 	
 	public void addRespostas(Resposta resposta) {
 		respostas.add(resposta);
+		setPontuacaoTotal(calcularPontuacaoTotal());
+		setTempoResolucaoMedCandidatoSeg(calcularTempoResolucaoMedCandidatoSeg());
+		setPercentualAcerto(calcularPercentual());
+	}
+	
+	public Double calcularPontuacaoTotal() {
+		Double sum = 0.0;
+		for (Resposta r : respostas) {
+			sum = sum + r.getPontuacao();
+		}
+		return sum;
+	}
+	
+	public Double calcularTempoResolucaoMedCandidatoSeg() {
+		Integer sum = 0;
+        for (Resposta r : respostas) {
+            sum += r.getCalcularTempoResolucaoSeg();
+        }
+        Double media = (double) sum / respostas.size();
+        return media;
+	}
+	
+	public Double calcularPercentual() {
+		Integer acertos = 0;
+		MutiplaEscolha q = new MutiplaEscolha();
+		
+		for (Resposta r : respostas) {
+            if(r.getQuestao() instanceof MutiplaEscolha) {
+            	q = (MutiplaEscolha) r.getQuestao();
+            	if (Integer.parseInt(r.getDescricao()) == q.getAlternativaCorreta()) {
+            		acertos++;
+            	}
+            }
+            else {
+            	if (r.getDescricao() != null) {
+            		acertos++;
+            	}
+            }
+        }
+		return (double) acertos*100/respostas.size();
 	}
 
 	@Override
@@ -122,7 +162,7 @@ public class AplicacaoQuestionario implements Serializable{
 	@Override
 	public String toString() {
 		return "AplicacaoQuestionario [token=" + token + ", percentualAcerto=" + percentualAcerto + ", pontuacao="
-				+ pontuacao + ", tempoResolucaoCandidatoSeg=" + tempoResolucaoCandidatoSeg + ", entrevista="
+				+ pontuacaoTotal + ", tempoResolucaoCandidatoSeg=" + tempoResolucaoMedCandidatoSeg + ", entrevista="
 				+ entrevista + ", respostas=" + respostas + ", questionario=" + questionario + "]";
 	}
 	

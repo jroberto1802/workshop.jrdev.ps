@@ -1,7 +1,11 @@
 package com.jrdev.ps.entities;
 
 import java.io.Serializable;
+import java.time.Duration;
+import java.time.Instant;
 import java.util.Objects;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -21,6 +25,11 @@ public class Resposta implements Serializable{
     private Long id;
 	
 	private String descricao;
+	private Double pontuacao = null;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	private Instant inicioResposta;
+	@JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss'Z'", timezone = "GMT")
+	private Instant finalResposta;
 	
 	@ManyToOne
     @JoinColumn(name = "aplicacaoQuestionario_id")
@@ -33,12 +42,15 @@ public class Resposta implements Serializable{
 	public Resposta() {
 	}
 
-	public Resposta(Long id, String descricao, Questao questao, AplicacaoQuestionario aplicacaoQuestionario) {
+	public Resposta(Long id, String descricao, Questao questao, AplicacaoQuestionario aplicacaoQuestionario, Instant inicioResposta, Instant finalResposta) {
 		super();
 		this.id = id;
 		this.descricao = descricao;
+		this.inicioResposta = inicioResposta;
+		this.finalResposta = finalResposta;
 		setQuestao(questao);
 		setAplicacaoQuestionario(aplicacaoQuestionario);
+		setPontuacao(getCalcularPontuacao());
 	}
 
 	public Long getId() {
@@ -73,6 +85,45 @@ public class Resposta implements Serializable{
 		this.questao = questao;
 	}
 
+	public Double getPontuacao() {
+		return pontuacao;
+	}
+
+	public void setPontuacao(Double pontuacao) {
+		this.pontuacao = pontuacao;
+	}
+
+	public Instant getInicioResposta() {
+		return inicioResposta;
+	}
+
+	public void setInicioResposta(Instant inicioResposta) {
+		this.inicioResposta = inicioResposta;
+	}
+
+	public Instant getFinalResposta() {
+		return finalResposta;
+	}
+
+	public void setFinalResposta(Instant finalResposta) {
+		this.finalResposta = finalResposta;
+	}
+	
+	public Integer getCalcularTempoResolucaoSeg() {
+        Duration duracao = Duration.between(inicioResposta, finalResposta);
+        long diferencaEmSegundos = duracao.getSeconds();
+        return Math.toIntExact(diferencaEmSegundos);
+    }
+	
+	public Double getCalcularPontuacao() {
+		if (getCalcularTempoResolucaoSeg() <= questao.getTempoResolucaoSeg()) {
+			return questao.getQtdPontos();
+		}
+		else {
+			return questao.getQtdPontos()/2;
+		}
+	}
+
 	@Override
 	public int hashCode() {
 		return Objects.hash(id);
@@ -89,5 +140,14 @@ public class Resposta implements Serializable{
 		Resposta other = (Resposta) obj;
 		return Objects.equals(id, other.id);
 	}
+
+	@Override
+	public String toString() {
+		return "Resposta [id=" + id + ", descricao=" + descricao + ", pontuacaoTotal=" + pontuacao
+				+ ", inicioResposta=" + inicioResposta + ", finalResposta=" + finalResposta + ", aplicacaoQuestionario="
+				+ aplicacaoQuestionario + ", questao=" + questao + "]";
+	}
+	
+	
 
 }

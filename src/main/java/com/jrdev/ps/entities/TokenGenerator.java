@@ -33,10 +33,6 @@ public class TokenGenerator {
             flag = 999_999 + (flag % (max - 999_999 + 1));
         }
         
-        if (flag < 0) {
-            return flag * -1;
-        } else {
-            return flag;
-        }
+        return Math.abs(flag);
     }
 }

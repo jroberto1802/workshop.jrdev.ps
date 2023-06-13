@@ -6,12 +6,12 @@ public class Alternativa implements Serializable{
 	private static final long serialVersionUID = 1L;
 	
 	private String descricao;
-	private Long codigo;
+	private Integer codigo;
 	
 	public Alternativa () {
 	}
 
-	public Alternativa(String descricao, Long codigo) {
+	public Alternativa(String descricao, Integer codigo) {
 		super();
 		this.descricao = descricao;
 		this.codigo = codigo;
@@ -25,11 +25,11 @@ public class Alternativa implements Serializable{
 		this.descricao = descricao;
 	}
 
-	public Long getCodigo() {
+	public Integer getCodigo() {
 		return codigo;
 	}
 
-	public void setCodigo(Long codigo) {
+	public void setCodigo(Integer codigo) {
 		this.codigo = codigo;
 	}
 	
