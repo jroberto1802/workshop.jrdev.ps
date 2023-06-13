@@ -116,12 +116,28 @@ public class Resposta implements Serializable{
     }
 	
 	public Double getCalcularPontuacao() {
-		if (getCalcularTempoResolucaoSeg() <= questao.getTempoResolucaoSeg()) {
-			return questao.getQtdPontos();
-		}
-		else {
-			return questao.getQtdPontos()/2;
-		}
+		Double pontuacao = 0.0;
+		if(questao instanceof MutiplaEscolha) {
+        	MutiplaEscolha q = (MutiplaEscolha) questao;
+        	for(Alternativa a : q.getAlternativas()) {
+        		if (q.getAlternativaCorreta() == a.getCodigo() && Integer.parseInt(descricao) == q.getAlternativaCorreta()) {
+        			if (getCalcularTempoResolucaoSeg() <= questao.getTempoResolucaoSeg()) {
+        				pontuacao = questao.getQtdPontos();
+        			}
+        			else {
+        				pontuacao = questao.getQtdPontos()/2;
+        			}
+        		}
+        	}
+        } else {
+	    	if (getCalcularTempoResolucaoSeg() <= questao.getTempoResolucaoSeg()) {
+				pontuacao = questao.getQtdPontos();
+			}
+			else {
+				pontuacao = questao.getQtdPontos()/2;
+			}
+        }
+		return pontuacao;
 	}
 
 	@Override

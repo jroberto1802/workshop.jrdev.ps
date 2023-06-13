@@ -22,6 +22,7 @@ import com.jrdev.ps.entities.enums.Status;
 import com.jrdev.ps.entities.enums.TipoQuestao;
 import com.jrdev.ps.entities.enums.TipoVaga;
 import com.jrdev.ps.entities.enums.Turno;
+import com.jrdev.ps.repositories.AlternativaRepository;
 import com.jrdev.ps.repositories.AplicacaoQuestionarioRepository;
 import com.jrdev.ps.repositories.CadastroPDVRepository;
 import com.jrdev.ps.repositories.CandidatoRepository;
@@ -59,6 +60,8 @@ public class TestConfig implements CommandLineRunner{
 	@Autowired
 	private AplicacaoQuestionarioRepository aplicacaoQuestionario;
 	
+	@Autowired
+	private AlternativaRepository alternativaRepository;
 
 	@Override
 	public void run(String... args) throws Exception {
@@ -85,11 +88,25 @@ public class TestConfig implements CommandLineRunner{
 		
 		questionarioRepository.saveAll(Arrays.asList(qtn1));
 		
-		Questao q1 = new Questao(null, "Como fazemos para descobrir o nome do Computador no Windows?", 120, 5.0, TipoQuestao.ABERTA, qtn1);
-		Questao q2 = new Questao(null, "Como podemos realizar o compartilhamento de pastas no Windows 10, para todos os usuários?", 120, 5.0, TipoQuestao.ABERTA, qtn1);
-		Questao q3 = new Questao(null, "Como podemos descobrir o endereço IP de um computador na rede local no Windows?", 120, 5.0, TipoQuestao.ABERTA, qtn1);
+		Questao q1 = new Questao(null, "Como fazemos para descobrir o nome do Computador no Windows?", 120, 3.0, TipoQuestao.ABERTA, qtn1);
+		Questao q2 = new Questao(null, "Como podemos realizar o compartilhamento de pastas no Windows 10, para todos os usuários?", 120, 3.0, TipoQuestao.ABERTA, qtn1);
+		Questao q3 = new Questao(null, "Como podemos descobrir o endereço IP de um computador na rede local no Windows?", 120, 3.0, TipoQuestao.ABERTA, qtn1);
 		
-		Questao q4 = new MutiplaEscolha(null, "Os computadores atuais ainda funcionam com sistema binário. A unidade básica nesse sistema é:", 60, 2.0, TipoQuestao.MUTIPLA_ESCOLHA, qtn1, new Alternativa("byte", 1), new Alternativa("bit", 2), new Alternativa("0", 3), new Alternativa("1", 4), 2);
+		MutiplaEscolha q4 = new MutiplaEscolha(null, "Os computadores atuais ainda funcionam com sistema binário. A unidade básica nesse sistema é:", 60, 1.0, TipoQuestao.MUTIPLA_ESCOLHA, qtn1, 2);
+		
+		questaoRepository.saveAll(Arrays.asList(q1, q2, q3, q4));
+		
+		Alternativa a1 = new Alternativa(null, "byte", 1, q4);
+		Alternativa a2 = new Alternativa(null, "bit", 2, q4);
+		Alternativa a3 = new Alternativa(null, "0", 3, q4);
+		Alternativa a4 = new Alternativa(null, "1", 4, q4);
+		
+		alternativaRepository.saveAll(Arrays.asList(a1, a2, a3, a4));
+		
+		q4.addAlternativa(a1);
+		q4.addAlternativa(a2);
+		q4.addAlternativa(a3);
+		q4.addAlternativa(a4);
 		
 		questaoRepository.saveAll(Arrays.asList(q1, q2, q3, q4));
 		
@@ -113,7 +130,7 @@ public class TestConfig implements CommandLineRunner{
 		Resposta r1 = new Resposta(null, "Configurações>Sistema", q1, aq1, Instant.parse("2023-05-31T09:15:00Z"), Instant.parse("2023-05-31T09:18:30Z"));
 		Resposta r2 = new Resposta(null, "botão direito sob a pasta desejada>Mostrar mais opções>Conceder acesso a>Pessoas Específicas>Selecione Todos", q2, aq1, Instant.parse("2023-05-31T09:18:30Z"), Instant.parse("2023-05-31T09:20:45Z"));
 		Resposta r3 = new Resposta(null, "windows+r>Comando(ncpa.cpl)>acesso ao painel de conexão de redes>Botão direito na rede conectada>status>detalhes...", q3, aq1, Instant.parse("2023-05-31T09:20:45Z"), Instant.parse("2023-05-31T09:22:30Z"));
-		Resposta r4 = new Resposta(null, "2", q4, aq1, Instant.parse("2023-05-31T09:22:35Z"), Instant.parse("2023-05-31T09:23:30Z"));
+		Resposta r4 = new Resposta(null, "3", q4, aq1, Instant.parse("2023-05-31T09:22:35Z"), Instant.parse("2023-05-31T09:23:30Z"));
 		
 		respostaRepository.saveAll(Arrays.asList(r1, r2, r3, r4));
 		

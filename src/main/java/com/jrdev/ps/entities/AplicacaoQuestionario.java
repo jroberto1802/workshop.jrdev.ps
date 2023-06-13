@@ -124,13 +124,14 @@ public class AplicacaoQuestionario implements Serializable{
 	
 	public Double calcularPercentual() {
 		Integer acertos = 0;
-		MutiplaEscolha q = new MutiplaEscolha();
 		
 		for (Resposta r : respostas) {
             if(r.getQuestao() instanceof MutiplaEscolha) {
-            	q = (MutiplaEscolha) r.getQuestao();
-            	if (Integer.parseInt(r.getDescricao()) == q.getAlternativaCorreta()) {
-            		acertos++;
+            	MutiplaEscolha q = (MutiplaEscolha) r.getQuestao();
+            	for(Alternativa a : q.getAlternativas()) {
+            		if (q.getAlternativaCorreta() == a.getCodigo() && Integer.parseInt(r.getDescricao()) == q.getAlternativaCorreta()) {
+            			acertos++;
+            		}
             	}
             }
             else {
