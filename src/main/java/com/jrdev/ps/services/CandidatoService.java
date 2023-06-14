@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jrdev.ps.entities.Candidato;
 import com.jrdev.ps.repositories.CandidatoRepository;
+import com.jrdev.ps.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class CandidatoService {
@@ -21,7 +22,7 @@ public class CandidatoService {
 	
 	public Candidato findById(Long id) {
 		Optional<Candidato> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public Candidato insert(Candidato obj) {

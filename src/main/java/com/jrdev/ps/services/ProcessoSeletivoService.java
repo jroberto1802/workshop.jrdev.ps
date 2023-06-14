@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jrdev.ps.entities.ProcessoSeletivo;
 import com.jrdev.ps.repositories.ProcessoSeletivoRepository;
+import com.jrdev.ps.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class ProcessoSeletivoService {
@@ -21,7 +22,7 @@ public class ProcessoSeletivoService {
 	
 	public ProcessoSeletivo findById(Long id) {
 		Optional<ProcessoSeletivo> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public ProcessoSeletivo insert(ProcessoSeletivo obj) {

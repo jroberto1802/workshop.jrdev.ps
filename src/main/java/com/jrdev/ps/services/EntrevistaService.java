@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.jrdev.ps.entities.Entrevista;
 import com.jrdev.ps.repositories.EntrevistaRepository;
+import com.jrdev.ps.services.exceptions.ResourceNotFoundException;
 
 
 @Service
@@ -23,7 +24,7 @@ public class EntrevistaService {
 	
 	public Entrevista findById(Long id) {
 		Optional<Entrevista> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public Double calcularDistancia(Entrevista entrevista) throws IOException {

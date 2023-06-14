@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jrdev.ps.entities.CadastroPDV;
 import com.jrdev.ps.repositories.CadastroPDVRepository;
+import com.jrdev.ps.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class CadastroPDVService {
@@ -21,7 +22,7 @@ public class CadastroPDVService {
 	
 	public CadastroPDV findById(Long id) {
 		Optional<CadastroPDV> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public CadastroPDV insert(CadastroPDV obj) {

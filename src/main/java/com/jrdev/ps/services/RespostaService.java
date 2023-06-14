@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jrdev.ps.entities.Resposta;
 import com.jrdev.ps.repositories.RespostaRepository;
+import com.jrdev.ps.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class RespostaService {
@@ -21,7 +22,7 @@ public class RespostaService {
 	
 	public Resposta findById(Long id) {
 		Optional<Resposta> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public Resposta insert(Resposta obj) {

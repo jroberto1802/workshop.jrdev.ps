@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jrdev.ps.entities.Alternativa;
 import com.jrdev.ps.repositories.AlternativaRepository;
+import com.jrdev.ps.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class AlternativaService {
@@ -21,7 +22,7 @@ public class AlternativaService {
 
 	public Alternativa findById(Long id) {
 		Optional<Alternativa> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 
 	public Alternativa insert(Alternativa obj) {

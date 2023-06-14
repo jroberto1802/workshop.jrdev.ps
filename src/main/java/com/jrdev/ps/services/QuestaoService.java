@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 
 import com.jrdev.ps.entities.Questao;
 import com.jrdev.ps.repositories.QuestaoRepository;
+import com.jrdev.ps.services.exceptions.ResourceNotFoundException;
 
 @Service
 public class QuestaoService {
@@ -21,7 +22,7 @@ public class QuestaoService {
 	
 	public Questao findById(Long id) {
 		Optional<Questao> obj = repository.findById(id);
-		return obj.get();
+		return obj.orElseThrow(() -> new ResourceNotFoundException(id));
 	}
 	
 	public Questao insert(Questao obj) {
