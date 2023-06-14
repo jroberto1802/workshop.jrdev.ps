@@ -11,17 +11,35 @@ import com.jrdev.ps.repositories.AlternativaRepository;
 
 @Service
 public class AlternativaService {
-	
+
 	@Autowired
 	private AlternativaRepository repository;
-	
+
 	public List<Alternativa> findAll() {
 		return repository.findAll();
 	}
-	
+
 	public Alternativa findById(Long id) {
 		Optional<Alternativa> obj = repository.findById(id);
 		return obj.get();
 	}
-	
+
+	public Alternativa insert(Alternativa obj) {
+		return repository.save(obj);
+	}
+
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+
+	public Alternativa update(Long id, Alternativa obj) {
+		Alternativa entity = repository.getReferenceById(id);
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(Alternativa entity, Alternativa obj) {
+		entity.setDescricao(obj.getDescricao());
+	}
+
 }

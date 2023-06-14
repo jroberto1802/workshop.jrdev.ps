@@ -24,4 +24,22 @@ public class CadastroPDVService {
 		return obj.get();
 	}
 	
+	public CadastroPDV insert(CadastroPDV obj) {
+		return repository.save(obj);
+	}
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
+	public CadastroPDV update(Long id, CadastroPDV obj) {
+		CadastroPDV entity = repository.getReferenceById(id);
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(CadastroPDV entity, CadastroPDV obj) {
+		entity.setNome(obj.getNome());
+		entity.setCep(obj.getCep());
+	}
 }

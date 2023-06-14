@@ -17,6 +17,7 @@ public class MutiplaEscolha extends Questao implements Serializable{
 	@JsonIgnore
 	@OneToMany
     private List<Alternativa> alternativas = new ArrayList<>();
+	
 	private Integer alternativaCorreta;
 	
 	public MutiplaEscolha() {

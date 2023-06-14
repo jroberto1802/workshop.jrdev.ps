@@ -24,4 +24,24 @@ public class QuestaoService {
 		return obj.get();
 	}
 	
+	public Questao insert(Questao obj) {
+		return repository.save(obj);
+	}
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
+	public Questao update(Long id, Questao obj) {
+		Questao entity = repository.getReferenceById(id);
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(Questao entity, Questao obj) {
+		entity.setProblema(obj.getProblema());
+		entity.setQtdPontos(obj.getQtdPontos());
+		entity.setTempoResolucaoSeg(obj.getTempoResolucaoSeg());
+		entity.setTipoQuestao(obj.getTipoQuestao());
+	}
 }

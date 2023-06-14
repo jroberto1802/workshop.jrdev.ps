@@ -23,4 +23,13 @@ public class AplicacaoQuestionarioService {
 		Optional<AplicacaoQuestionario> obj = repository.findById(id);
 		return obj.get();
 	}
+	
+	public AplicacaoQuestionario insert(AplicacaoQuestionario obj) {
+		return repository.save(obj);
+	}
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
 }

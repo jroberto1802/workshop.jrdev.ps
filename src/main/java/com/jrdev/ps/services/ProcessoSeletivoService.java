@@ -24,4 +24,26 @@ public class ProcessoSeletivoService {
 		return obj.get();
 	}
 	
+	public ProcessoSeletivo insert(ProcessoSeletivo obj) {
+		return repository.save(obj);
+	}
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
+	public ProcessoSeletivo update(Long id, ProcessoSeletivo obj) {
+		ProcessoSeletivo entity = repository.getReferenceById(id);
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(ProcessoSeletivo entity, ProcessoSeletivo obj) {
+		entity.setDataInicio(obj.getDataInicio());
+		entity.setNome(obj.getNome());
+		entity.setPdv(obj.getPdv());
+		entity.setQtdVagas(obj.getQtdVagas());
+		entity.setTipoVaga(obj.getTipoVaga());
+		entity.setTurnoVaga(obj.getTurnoVaga());
+	}
 }

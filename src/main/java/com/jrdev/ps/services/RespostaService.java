@@ -24,4 +24,23 @@ public class RespostaService {
 		return obj.get();
 	}
 	
+	public Resposta insert(Resposta obj) {
+		return repository.save(obj);
+	}
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
+	public Resposta update(Long id, Resposta obj) {
+		Resposta entity = repository.getReferenceById(id);
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(Resposta entity, Resposta obj) {
+		entity.setDescricao(obj.getDescricao());
+		entity.setInicioResposta(obj.getInicioResposta());
+		entity.setFinalResposta(obj.getFinalResposta());
+	}
 }

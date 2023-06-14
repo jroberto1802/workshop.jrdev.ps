@@ -24,4 +24,22 @@ public class QuestionarioService {
 		return obj.get();
 	}
 	
+	public Questionario insert(Questionario obj) {
+		return repository.save(obj);
+	}
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
+	public Questionario update(Long id, Questionario obj) {
+		Questionario entity = repository.getReferenceById(id);
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(Questionario entity, Questionario obj) {
+		entity.setTitulo(obj.getTitulo());
+	}
+	
 }

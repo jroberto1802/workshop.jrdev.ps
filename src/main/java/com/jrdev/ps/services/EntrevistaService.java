@@ -15,19 +15,41 @@ import com.jrdev.ps.repositories.EntrevistaRepository;
 public class EntrevistaService {
 	
 	@Autowired
-	private EntrevistaRepository entrevistaRepository;
+	private EntrevistaRepository repository;
 	
 	public List<Entrevista> findAll() {
-		return entrevistaRepository.findAll();
+		return repository.findAll();
 	}
 	
 	public Entrevista findById(Long id) {
-		Optional<Entrevista> obj = entrevistaRepository.findById(id);
+		Optional<Entrevista> obj = repository.findById(id);
 		return obj.get();
 	}
 	
 	public Double calcularDistancia(Entrevista entrevista) throws IOException {
 		return entrevista.getCalcularDistancia(entrevista.getProcesso().getPdv().getCep(), entrevista.getCandidato().getCep());
+	}
+	
+	public Entrevista insert(Entrevista obj) {
+		return repository.save(obj);
+	}
+	
+	public void delete(Long id) {
+		repository.deleteById(id);
+	}
+	
+	public Entrevista update(Long id, Entrevista obj) {
+		Entrevista entity = repository.getReferenceById(id);
+		updateData(entity, obj);
+		return repository.save(entity);
+	}
+
+	private void updateData(Entrevista entity, Entrevista obj) {
+		entity.setData(obj.getData());
+		entity.setDiccao(obj.getDiccao());
+		entity.setGirias(obj.getGirias());
+		entity.setPontualidade(obj.getPontualidade());
+		entity.setPostura(obj.getPostura());
 	}
 	
 }
